@@ -1,8 +1,7 @@
 from dataLoader import dataLoader
-from Regression_Trainer import Regression_Trainer as Trainer
 import numpy as np
 from TreeTools import *
-import time
+
 
 class node():
         def __init__(self,node_type, data_X = None, data_Y = None, feature_index = None,
@@ -74,7 +73,7 @@ class C45():
                 buffer[j,0] = g_r
                 alpha +=  g
                 buffer[j,2] = feature_cut
-                
+
             if (len(classes_)-1) >0:
                 alpha /= (len(classes_)-1)
             else:

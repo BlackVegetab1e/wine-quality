@@ -121,8 +121,6 @@ def majority(Y: np.ndarray) -> np.ndarray:
 
 
 
-
-
 def cut_dataset_by_contious_feature(X: np.ndarray, Y: np.ndarray,   # 样本
         A: int,        # 用哪个特征来分隔
         condition: float,      # 在哪里分割

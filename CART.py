@@ -1,8 +1,8 @@
 from dataLoader import dataLoader
-from Regression_Trainer import Regression_Trainer as Trainer
+
 import numpy as np
 from TreeTools import *
-import time
+
 
 class node():
         def __init__(self,node_type, data_X = None, data_Y = None, feature_index = None,
@@ -109,38 +109,6 @@ class CART():
         
 
         
-
-if __name__ == "__main__":
-
-    data_path = './Data/winequality-white.csv'
-
-    normization_type = 'Standardization'
-    data = dataLoader(data_path)
-    data.normalization(normization_type)
-    training_data, test_data = data.data_cut(10, 9)
-
-    training_x = training_data[:,0:-1]
-    training_y = training_data[:,-1]
-    
-    cart = CART(training_x, training_y, 15)
-    tree = cart.generate_tree(cart.root, np.array(range(11)))
-    
-
-    counter = 0
-    for data in test_data:
-        now_node = tree
-        while now_node.type!='leaf':
-            if data[now_node.cut_feature]>=now_node.cut_condition:
-                now_node = now_node.next[0]
-            else:
-                now_node = now_node.next[1]
-        if now_node.leaf_type == data[-1]:
-            counter+=1
-
-    print(counter/len(test_data))
-
-    
-
 
 
 
