@@ -18,6 +18,7 @@ if __name__ == "__main__":
     normization_type = 'Standardization'
 
     data = dataLoader(data_path)
+
     data.normalization(normization_type)
     training_data, test_data = data.data_cut(10, 9)
     

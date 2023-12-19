@@ -1,8 +1,48 @@
 import numpy as np
 
 
-def g(X,Y,A):
-    pass
+def g_discrete(X: np.ndarray, Y: np.ndarray, A: int):
+    target_feature = X[A, :]
+    classes_ = np.unique(target_feature)  
+    N = len(Y)
+    g = 0.0
+    for i in range(len(classes_)):
+        index = np.where(target_feature == classes_[i])[0]
+        g += entropy(Y[index])*len(index)/N
+    return entropy(Y) - g 
+
+
+def g_discrete_ratio(X: np.ndarray, Y: np.ndarray, A: int):
+    g = g_discrete(X,Y,A)
+    g_ratio =  g / entropy(X[A, :])
+    return g_ratio
+
+
+def g_contious(X: np.ndarray, Y: np.ndarray, A: int, condition: float):
+    target_feature = X[:, A]
+    N = len(Y)
+    g = 0.0
+    index_positive = np.where(target_feature >= condition)[0]
+    index_negative = np.where(target_feature < condition)[0]
+    g += entropy(Y[index_positive])*len(index_positive)/N
+    g += entropy(Y[index_negative])*len(index_negative)/N
+    return entropy(Y) - g 
+
+
+
+def g_contious_ratio(X: np.ndarray, Y: np.ndarray, A: int, condition):
+    g = g_contious(X, Y, A, condition)
+    # target_feature = X[:, A]
+    # N = len(Y)
+    # r_positive = len(np.where(target_feature >= condition)[0])/N
+    # r_negative = len(np.where(target_feature < condition)[0])/N
+    # if r_positive == 0:
+    #     r_positive = 1
+    # if r_negative == 0:
+    #     r_negative = 1
+    # entropy_A = -np.log2(r_positive)*(r_positive) - np.log2(r_negative)*(r_negative) 
+    # g_ratio =  g / entropy_A
+    return  g
 
 
 
@@ -13,7 +53,6 @@ def entropy(Y: np.ndarray) -> float:
     K = len(classes_)   
     N_ = np.zeros(K)        
     for k, c1ass in enumerate(classes_):
-       
         N_[k] = sum(Y==c1ass)  
     p_ = N_/N 
     s = -np.log2(p_).dot(p_) 
@@ -36,6 +75,7 @@ def gini(Y: np.ndarray) -> float:
     """输入类别标签集y_，输出基尼指数gini"""
     N = len(Y)         
     classes_ = np.unique(Y) 
+
     K = len(classes_)    
     N_ = np.zeros(K)     
     for k, c1ass in enumerate(classes_):
@@ -69,9 +109,15 @@ def majority(Y: np.ndarray) -> np.ndarray:
 
 
 
-def cut_dataset_by_contious_feature(X: np.ndarray, y: np.ndarray,   # 样本
-        m: int,        # 用哪个特征来分隔
-        t: float,      # 在哪里分割
+def cut_dataset_by_contious_feature(X: np.ndarray, Y: np.ndarray,   # 样本
+        A: int,        # 用哪个特征来分隔
+        condition: float,      # 在哪里分割
         ):
-    pass
+    target_feature = X[:, A]
+    N = len(Y)
+
+    index_positive = np.where(target_feature >= condition)[0]
+    index_negative = np.where(target_feature < condition)[0]
+
+    return X[index_positive], Y[index_positive],X[index_negative], Y[index_negative]
 
