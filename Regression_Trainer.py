@@ -53,7 +53,7 @@ class Regression_Trainer():
 
         return counter/Y.shape[0]
 
-    def train(self,writer, lables, lr=1e-1, init_theta = np.zeros((12,10)), lambda_theta = 0.001, l_steps = 5000):
+    def train(self,writer, lable, lr=1e-1, init_theta = np.zeros((12,10)), lambda_theta = 0.001, l_steps = 5000):
         # 为了让偏置项与其他的参数写成一个矩阵，这边将一行1
         # 写在X的第一行，这样的话结果直接就是y=theta*x
         # 不需要在计算公式中另外加入偏置项。
@@ -75,7 +75,7 @@ class Regression_Trainer():
 
 
         for i in range(l_steps):
-            writer.add_scalars('correct_rate', {lables :self.correct_rate(X, Y, theta)}, i)
+            # writer.add_scalars('correct_rate', {lable :self.correct_rate(X, Y, theta)}, i)
             if i % 1000 == 0:
                 print("CorrectRate@epoch", i, ":", self.correct_rate(X, Y, theta))
                 
