@@ -1,3 +1,4 @@
+# 梯度下降回归的实现
 import numpy as np
 
 class Regression_Trainer():
@@ -84,6 +85,10 @@ class Regression_Trainer():
             theta = theta - lr * self.gradient(X, Y, theta, lambda_theta)
 
         print(theta)
+        for i in range(len(theta)):
+            for j in range(len(theta[0])):
+                print(theta[i,j], end=',')
+            print('')
         return theta
             
 

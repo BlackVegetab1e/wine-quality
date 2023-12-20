@@ -1,8 +1,11 @@
+# 此代码对应C45和CART两种决策树
+
+
 from dataLoader import dataLoader
 from C45 import C45
 from CART import CART
 import numpy as np
-
+import time
 
 
     
@@ -18,7 +21,7 @@ def test_correct_rate(tree, test_data):
         if now_node.leaf_type == data[-1]:
             counter+=1
 
-    print(counter/len(test_data))
+    # print(counter/len(test_data))
     return counter/len(test_data)
 
 
@@ -32,23 +35,25 @@ if __name__ == "__main__":
     CART_corr = np.zeros((10,))
 
     for i in range(10):
-
+        t1 = time.time()
         training_data, test_data = data.data_cut(10, i)       # 十折交叉验证 
         training_x = training_data[:,0:-1]
         training_y = training_data[:,-1]
         # c45决策树   
-        c45 = C45(training_x, training_y, 0.02)         
+        c45 = C45(training_x, training_y, 0.001)         
         tree_c45 = c45.generate_tree(c45.root, np.array(range(11)))
         C45_corr[i] = test_correct_rate(tree_c45, test_data)
 
-
+        t2 = time.time()
+        print('C45time:',t2-t1)
 
         # cart决策树
         cart = CART(training_x, training_y, 15)
         tree_cart = cart.generate_tree(cart.root, np.array(range(11)))
         CART_corr[i] = test_correct_rate(tree_cart, test_data)
         
-    
+        t3 = time.time()
+        print('CARTtime:',t3-t2)
     print(C45_corr)
     print(C45_corr.mean())
     print(CART_corr)

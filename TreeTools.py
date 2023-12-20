@@ -1,3 +1,5 @@
+# 一些常用工具,算各种增益 系数
+
 import numpy as np
 
 def g_discrete(X: np.ndarray, Y: np.ndarray, A: int):

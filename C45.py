@@ -1,3 +1,5 @@
+#  此代码对应C45的具体实现
+
 from dataLoader import dataLoader
 import numpy as np
 from TreeTools import *
@@ -72,6 +74,7 @@ class C45():
                 g_r, g = g_contious_ratio(now_node.data_X, now_node.data_Y, i, feature_cut)
                 buffer[j,0] = g_r
                 alpha +=  g
+                buffer[j,1] = g
                 buffer[j,2] = feature_cut
 
             if (len(classes_)-1) >0:
