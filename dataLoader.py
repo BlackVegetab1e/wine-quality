@@ -52,7 +52,7 @@ class dataLoader():
                 self.datas[:,i] = (self.datas[:,i] - mean_col[i])/(max_col[i] - min_col[i])
 
         elif type == 'Standardization':
-            var_col = np.mean(self.datas, axis=0)
+            var_col = np.var(self.datas, axis=0)
             mean_col = np.mean(self.datas, axis=0)
             for i in range(self.datas[0].shape[0]-1):
                 self.datas[:,i] = (self.datas[:,i] - mean_col[i])/var_col[i]

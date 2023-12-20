@@ -4,7 +4,7 @@ import numpy as np
 if __name__ == "__main__":
 
 
-    lr=1e-1
+    lr=1e-4
     init_theta = np.zeros((12,10))
     lambda_theta = 0.001
     l_steps = 10000
