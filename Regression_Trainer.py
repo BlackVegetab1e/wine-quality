@@ -37,8 +37,8 @@ class Regression_Trainer():
         if self.algo == 'Regu':
             theta_of_x = theta.copy()
             theta_of_x[0,:] = 0
-            # print(grad)
-            # print(lambda_theta)
+            # print(theta_of_x)
+            # print(lambda_theta * theta_of_x)
             grad += lambda_theta * theta_of_x
         # print(grad)
         return grad
@@ -53,7 +53,7 @@ class Regression_Trainer():
 
         return counter/Y.shape[0]
 
-    def train(self,lr=1e-1, init_theta = np.zeros((12,10)), lambda_theta = 0.001, l_steps = 5000):
+    def train(self,writer, lables, lr=1e-1, init_theta = np.zeros((12,10)), lambda_theta = 0.001, l_steps = 5000):
         # 为了让偏置项与其他的参数写成一个矩阵，这边将一行1
         # 写在X的第一行，这样的话结果直接就是y=theta*x
         # 不需要在计算公式中另外加入偏置项。
@@ -75,9 +75,10 @@ class Regression_Trainer():
 
 
         for i in range(l_steps):
-            
+            writer.add_scalars('correct_rate', {lables :self.correct_rate(X, Y, theta)}, i)
             if i % 1000 == 0:
                 print("CorrectRate@epoch", i, ":", self.correct_rate(X, Y, theta))
+                
                 # print(theta)
             # writer.add_scalars('loss', {lables :self.MSE(X, Y, theta)}, i)
             theta = theta - lr * self.gradient(X, Y, theta, lambda_theta)
@@ -90,13 +91,15 @@ class Regression_Trainer():
         X_1 = np.ones((len(self.test_data),1))
     
         X = self.test_data[:, :-1]
-        Y = self.test_data[:, -1].reshape(-1,1)
-        X = np.hstack((X_1, X))
-        # print(X)
-        # print(Y)
+        
+        Y_origin = self.test_data[:, -1].reshape(-1,1)
 
-        print("MSELoss@:", self.MSE(X, Y, theta))
-        return self.MSE(X, Y, theta)
+
+        X = np.hstack((X_1, X))
+
+        Y = self.Origin2Onehot(Y_origin)
+
+        return self.correct_rate(X, Y, theta)
     
 
     def Origin2Onehot(self, Y_origin):
